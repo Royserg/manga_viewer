@@ -5,9 +5,11 @@
 {% endblock %}
 
 {% block main %}
+    <h2 class='text-center'>Chapter: {{ chapter }}</h2>
+    <hr>
     {% for page in pages %}
-        <div>
-            <img src="https://cdn.mangaeden.com/mangasimg/{{ page[1] }}" alt="{{ page[0] }}" />        
+        <div class="card mb-3" style="width: 18rem;"></div>
+            <img class="rounded mx-auto d-block" src="https://cdn.mangaeden.com/mangasimg/{{ page[1] }}" alt="{{ page[0] }}" />
         </div>
     {% endfor %}
 {% endblock %}

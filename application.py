@@ -33,7 +33,7 @@ def index():
 @app.route('/<manga_title>')
 def manga(manga_title):
     # query the db to find proper manga ID
-    r = requests.get('https://www.mangaeden.com/api/manga/580fb776719a161b4ecb1ecd')
+    r = requests.get('https://www.mangaeden.com/api/manga/5aa9b638719a1652eae2652d')
     data = r.json()
 
     # pull informations from json
@@ -57,7 +57,7 @@ def manga(manga_title):
 @app.route('/<manga_title>/<int:chapter>')
 def chapter(manga_title, chapter):
     # pull chapter from API
-    r = requests.get('https://www.mangaeden.com/api/chapter/5941c017719a161bc68bf4f3')
+    r = requests.get('https://www.mangaeden.com/api/chapter/4e711cb0c09225616d037cc2')
     r_pages = r.json()['images']
     # pages of chapter are in the descending order, below reversing them
     pages = []
