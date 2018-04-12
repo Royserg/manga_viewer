@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {% if session['title'] %}
+        {{ session['title'] }} 
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <h1> {{ title }} </h1>
+    <hr>
+    <ul>
+        {% for chapter in chapters %}
+            <li>chapter: {{ chapter[0] }} id: {{ chapter[3] }} </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

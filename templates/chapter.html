@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ title }}: {{ chapter }}
+{% endblock %}
+
+{% block main %}
+    {% for page in pages %}
+        <div>
+            <img src="https://cdn.mangaeden.com/mangasimg/{{ page[1] }}" alt="{{ page[0] }}" />        
+        </div>
+    {% endfor %}
+{% endblock %}
