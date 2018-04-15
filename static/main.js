@@ -1,12 +1,35 @@
-const mangaBtn = document.querySelector('#mangaBtn');
-const mangaList = document.querySelector('#mangaList');
+const suggestions = document.querySelector('#suggestions');
+const query = document.querySelector('#q');
+const form = document.getElementById('form');
+const minLength = 1;
+
+// prevent form submitting
+form.addEventListener('submit', e => {
+    e.preventDefault();
+})
+
+query.addEventListener('input', e => {;
+    // detect when user type and backspace characters
+    if (e.inputType === "insertText" || e.inputType === "deleteContentBackward"){
+        if (!e.target.value.length < minLength){
+            // AJAX call GET
+            console.log("typed", e.target.value);
+        }
+    } else {
+        // detect selecting option or pressing enter
+        console.log("click on option or enter", e)
+    }   
+});
+
+// listen on the input
+
 
 // mangaBtn.addEventListener('click', getMangas);
 
 // function getMangas(){
 //     fetch('https://www.mangaeden.com/api/list/0/?p=0')
 //     .then((res) => res.json())
-//     .then((data) => {
+//     `.then((data) => {
 //         data.manga.forEach(element => {
 //             // title
 //             mangaList.innerHTML += `<li>${element.t}
