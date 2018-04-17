@@ -11,13 +11,27 @@ form.addEventListener('submit', e => {
 query.addEventListener('input', e => {;
     // detect when user type and backspace characters
     if (e.inputType === "insertText" || e.inputType === "deleteContentBackward"){
-        if (!e.target.value.length < minLength){
-            // AJAX call GET
-            console.log("typed", e.target.value);
+        let q = e.target.value;
+        if (q.length > minLength){
+            // get 10 pick from db - AJAX call
+            fetch(`/api/suggestions/${q}`)
+            .then((res) => res.json())
+            .then((data) => {
+                // clear the datalist options
+                suggestions.children = "";
+                let options = "";
+                
+                // save each result as an option to append to datalist
+                for(let manga in data){
+                    options += `<option id="${data[manga]['d']}" value="${manga}" >last chapter: ${data[manga]['last_date']}</option>`;
+                }
+                suggestions.innerHTML = options;
+                
+            })
         }
     } else {
         // detect selecting option or pressing enter
-        console.log("click on option or enter", e)
+        // console.log("click on option or enter", e)
     }   
 });
 

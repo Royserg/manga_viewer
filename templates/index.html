@@ -6,19 +6,18 @@
 
 
 {% block main %}
-    <button id="mangaBtn">Manga List</button>
-    <div>
-        <!-- Orginize Manga titles and info into Select  -->
-        <ol id="mangaList">
-            {% for manga in mangas %}
-                <li>
-                    {{ manga["t"] }}; id: {{ manga["i"]  }} 
-                    {% if manga["im"] %}
-                        <img src="https://cdn.mangaeden.com/mangasimg/{{ manga['im'] }}" />
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ol>
+    <h2>Manga Viewer</h2>
+    <!-- Orginize Manga titles and info into Select  -->
+    <form id="form" action='/suggestions' method="GET">
+        <div class="form-group">
+            <label class="sr-only" for="q">Manga Title</label>
+            <input id="q" name="q" class="form-control" type="text" list="suggestions" placeholder="Manga" />
 
-    </div>
+
+            <datalist id="suggestions">
+                
+            </datalist>
+        </div>
+    </form>
+    
 {% endblock %}
