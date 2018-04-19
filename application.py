@@ -2,7 +2,7 @@ import os
 import requests
 import datetime
 
-from flask import Flask, render_template, jsonify, session, request
+from flask import Flask, render_template, jsonify, session, request, url_for
 from models import *
 
 # ----APP CONFIG----
@@ -45,12 +45,11 @@ def index():
     return render_template('index.html', mangas=data)
 
 
-@app.route('/api/suggestions/<q>')
-def suggestions(q):
+# ---PULL SUGGESTIONS FROM DB---
+@app.route('/api/suggestions/')
+def suggestions():
     """Fetch 10 picks from database matching query and return them"""
-    
-    # transform query for querying by alias [ex. boku-no-hero]
-    query = "-".join(q.lower().split(" "))
+    query = request.args.get('query')
     
     # query db for 10 matches
     data = Manga.query.filter(Manga.alias.like(f"{query}%")).limit(10).all()
@@ -60,49 +59,38 @@ def suggestions(q):
 
     for manga in data:
         suggestions[manga.title] = {
-                                    "id": manga.id,
-                                    "image": manga.image,
+                                    "image": manga.image, # for possible implementation of dropdown divs
                                     "last_date": datetime.datetime.fromtimestamp(int(manga.last_chap_date)).strftime('%d-%m-%Y')
                                     }
     
     return jsonify(suggestions)
 
 
-@app.route('/<manga_title>')
-def manga(manga_title):
-    # query the db to find proper manga ID
-    r = requests.get('https://www.mangaeden.com/api/manga/5aa9b638719a1652eae2652d')
+@app.route('/<manga_alias>')
+def about_manga(manga_alias):
+    # if request.method == "POST":
+    #     # query db for manga info
+    manga_id = Manga.query.filter_by(alias=manga_alias).first().id
+    print(f"+++{manga_id}+++")
+    
+    # get info about manga from API https://www.mangaeden.com/api/manga/[manga.id]/
+    r = requests.get(f'https://www.mangaeden.com/api/manga/{manga_id}')
     data = r.json()
 
-    # pull informations from json
-    title = data['title']
-    chapters = data['chapters']
-
-    # initialize title session if doesn't exist
-    if session.get('title') is None:
-        session['title'] = ""
-
-    # initialize chapters session if doesn't exist
-    if session.get('chapters') is None:
-        session['chapters'] = []
-
-    # save into session
-    session['title'] = title
-
-    return render_template('about_manga.html', title=title, chapters=chapters)
+    return render_template('about_manga.html', manga=data)
 
 
-@app.route('/<manga_title>/<int:chapter>')
-def chapter(manga_title, chapter):
-    # pull chapter from API
-    r = requests.get('https://www.mangaeden.com/api/chapter/4e711cb0c09225616d037cc2')
-    r_pages = r.json()['images']
-    # pages of chapter are in the descending order, below reversing them
-    pages = []
-    for page in r_pages:
-        pages.insert(0, page)
+# @app.route('/<manga_title>/<int:chapter>')
+# def chapter(manga_title, chapter):
+#     # pull chapter from API
+#     r = requests.get('https://www.mangaeden.com/api/chapter/4e711cb0c09225616d037cc2')
+#     r_pages = r.json()['images']
+#     # pages of chapter are in the descending order, below reversing them
+#     pages = []
+#     for page in r_pages:
+#         pages.insert(0, page)
 
-    return render_template('chapter.html', pages=pages, chapter=chapter)
+#     return render_template('chapter.html', pages=pages, chapter=chapter)
 
 
 if __name__ == '__main__':
