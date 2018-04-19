@@ -4,20 +4,18 @@
     Manga - Home
 {% endblock %}
 
-
 {% block main %}
     <h2>Manga Viewer</h2>
     <!-- Orginize Manga titles and info into Select  -->
-    <form id="form" action='/suggestions' method="GET">
-        <div class="form-group">
-            <label class="sr-only" for="q">Manga Title</label>
-            <input id="q" name="q" class="form-control" type="text" list="suggestions" placeholder="Manga" />
+    <div class="form-group">
+        <label class="sr-only" for="q">Manga Title</label>
+        <input id="q" name="q" class="form-control" autocomplete="off" spellcheck="false" type="text" list="suggestions" placeholder="Manga" />
 
+        <datalist id="suggestions">            
+        </datalist>
+    </div>    
+{% endblock %}
 
-            <datalist id="suggestions">
-                
-            </datalist>
-        </div>
-    </form>
-    
+{% block scripts %}
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 {% endblock %}
