@@ -1,20 +1,24 @@
 const suggestions = document.querySelector('#suggestions');
 const query = document.querySelector('#q');
-const form = document.getElementById('form');
 const minLength = 1;
 
-// prevent form submitting
-form.addEventListener('submit', e => {
-    e.preventDefault();
-})
+
+// convert input title for matching manga alias
+const convertTitle = (title) => title = title.toLowerCase().split(" ").join("-");
+
 
 query.addEventListener('input', e => {;
     // detect when user type and backspace characters
     if (e.inputType === "insertText" || e.inputType === "deleteContentBackward"){
-        let q = e.target.value;
-        if (q.length > minLength){
+        let q = convertTitle(e.target.value);
+        if (q.length > 1){
+            // https://stackoverflow.com/questions/35038857/setting-query-string-using-fetch-get-request
+            let url = new URL('http://127.0.0.1:5000/api/suggestions')
+            let params = {query: q}
+            url.search = new URLSearchParams(params)
+
             // get 10 pick from db - AJAX call
-            fetch(`/api/suggestions/${q}`)
+            fetch(url)
             .then((res) => res.json())
             .then((data) => {
                 // clear the datalist options
@@ -23,7 +27,7 @@ query.addEventListener('input', e => {;
                 
                 // save each result as an option to append to datalist
                 for(let manga in data){
-                    options += `<option id="${data[manga]['d']}" value="${manga}" >last chapter: ${data[manga]['last_date']}</option>`;
+                    options += `<option value="${manga}" >last chapter: ${data[manga]['last_date']}</option>`;
                 }
                 suggestions.innerHTML = options;
                 
@@ -31,44 +35,11 @@ query.addEventListener('input', e => {;
         }
     } else {
         // detect selecting option or pressing enter
-        // console.log("click on option or enter", e)
+        let title = convertTitle(e.target.value);
+        // form.action = `/${title}`;
+        // form.submit()
+        window.open(`/${title}`, "_self");
     }   
 });
 
-// listen on the input
 
-
-// mangaBtn.addEventListener('click', getMangas);
-
-// function getMangas(){
-//     fetch('https://www.mangaeden.com/api/list/0/?p=0')
-//     .then((res) => res.json())
-//     `.then((data) => {
-//         data.manga.forEach(element => {
-//             // title
-//             mangaList.innerHTML += `<li>${element.t}
-//             <img src="https://cdn.mangaeden.com/mangasimg/${element.im}" width=40 height=40 />
-//             </li>
-//             `
-//         });
-//     })
-// }
-
-//  580fb776719a161b4ecb1ecd  Vector Ball
-// {
-//     "a": "vector-ball", 
-//     "c": [
-//       "Action", 
-//       "Comedy", 
-//       "Drama", 
-//       "School Life", 
-//       "Shounen", 
-//       "Supernatural"
-//     ], 
-//     "h": 7306, 
-//     "i": "580fb776719a161b4ecb1ecd", 
-//     "im": "6d/6da1578a4d7e573aea5e07fea360aa40522a86195643d831d56cca29.png", 
-//     "ld": 1497481239.0, 
-//     "s": 1, 
-//     "t": "Vector Ball"
-//   }, 
