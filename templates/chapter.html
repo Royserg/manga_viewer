@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {{ title }}: {{ chapter }}
+    {{ alias }}: {{ chapter }}
 {% endblock %}
 
 {% block main %}
     <h2 class='text-center'>Chapter: {{ chapter }}</h2>
     <hr>
     {% for page in pages %}
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mb-2">
             <img class="mx-auto d-block mb-1" src="https://cdn.mangaeden.com/mangasimg/{{ page[1] }}" alt="{{ page[0] }}" />
         </div>
     {% endfor %}
