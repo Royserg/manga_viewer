@@ -2,7 +2,8 @@ import os
 import requests
 import datetime
 
-from flask import Flask, render_template, jsonify, session, request, url_for
+from flask import Flask, render_template, jsonify, session, request, url_for, redirect
+from flask_session import Session
 from models import *
 
 # ----APP CONFIG----
@@ -21,8 +22,6 @@ POSTGRES = {
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.secret_key = os.urandom(24)
-app.config['SESSION_TYPE'] = 'filesystem'
 db.init_app(app)
 
 # ----INITIAL DATA SEED----
@@ -40,13 +39,12 @@ def init_db():
 @app.route('/')
 def index():
     # query database for mangas information
-    data = Manga.query.all()
-    
-    return render_template('index.html', mangas=data)
+    # data = Manga.query.all()  
+    return render_template('index.html')
 
 
 # ---PULL SUGGESTIONS FROM DB---
-@app.route('/api/suggestions/')
+@app.route('/api/suggestions')
 def suggestions():
     """Fetch 10 picks from database matching query and return them"""
     query = request.args.get('query')
@@ -68,42 +66,58 @@ def suggestions():
 
 @app.route('/<manga_alias>')
 def about_manga(manga_alias):
-    # if request.method == "POST":
-    #     # query db for manga info
-    manga_id = Manga.query.filter_by(alias=manga_alias).first().id
-    print(f"+++{manga_id}+++")
+    
+    manga_id = Manga.query.filter_by(alias=f'{manga_alias}').first().id
+    print(f"=====Manga id: {manga_id}====")
     
     # get info about manga from API https://www.mangaeden.com/api/manga/[manga.id]/
     r = requests.get(f'https://www.mangaeden.com/api/manga/{manga_id}')
     data = r.json()
 
+    # init session var
+    session['chapters'] = {}
+    chapters = data['chapters']
+    for chapter in chapters:
+        session['chapters'][chapter[0]] = chapter[3]
+    # print(session['chapters'])
+
     return render_template('about_manga.html', manga=data)
 
 
-# @app.route('/<manga_title>/<int:chapter>')
-# def chapter(manga_title, chapter):
-#     # pull chapter from API
-#     r = requests.get('https://www.mangaeden.com/api/chapter/4e711cb0c09225616d037cc2')
-#     r_pages = r.json()['images']
-#     # pages of chapter are in the descending order, below reversing them
-#     pages = []
-#     for page in r_pages:
-#         pages.insert(0, page)
+@app.route('/<alias>/<int:chapter>')
+def chapter(alias, chapter):
+    # retrieve chapter id from the session
+    try:
+        chapter_id = session.get('chapters', None)[chapter]
+    except KeyError:
+        # Flash msg: Couldn't find Chapter
+        return redirect(url_for('about_manga', manga_alias=alias))
 
-#     return render_template('chapter.html', pages=pages, chapter=chapter)
+    print(f'=========chapter_id: {chapter_id}==========')
+    # pull chapter Data from API
+    # r = requests.get('https://www.mangaeden.com/api/chapter/5372443e45b9ef33a85f0ffb')
+    r = requests.get(f'https://www.mangaeden.com/api/chapter/{chapter_id}')
+
+    r_pages = r.json()['images']
+    # manga images are in descending order, reverse them
+    pages = []
+    for page in r_pages:
+        pages.insert(0, page)
+
+    return render_template('chapter.html', pages=pages, chapter=chapter)
 
 
-if __name__ == '__main__':
-    
+if __name__ == '__main__':    
     # seed data from API if table is empty
     with app.app_context():
         if not Manga.query.all():
             print("seeding data to db")
             init_db()
+    
+    app.secret_key = os.urandom(24)
+    app.config['SESSION_TYPE'] = 'filesystem'
 
+    Session(app)
     app.run(debug=True)
-    
-    
-    # initialy fill all of the titles to the db
-    
+
     
