@@ -6,14 +6,24 @@
 
 {% block main %}
     <h2>Manga Viewer</h2>
-    <!-- Orginize Manga titles and info into Select  -->
-    <div class="form-group">
-        <label class="sr-only" for="q">Manga Title</label>
-        <input id="q" name="q" class="form-control" autocomplete="off" spellcheck="false" type="text" list="suggestions" placeholder="Manga" />
+        <div class="form-group">
+            <label class="sr-only" for="q">Manga Title</label>
 
-        <datalist id="suggestions">            
-        </datalist>
-    </div>    
+            <input 
+                id="inputField" 
+                name="inputField" 
+                class="form-control" 
+                autofocus
+                autocomplete="off" 
+                spellcheck="false" 
+                type="text" 
+                list="suggestions" 
+                placeholder="Manga" 
+            />
+            <datalist id="suggestions">
+            </datalist>
+        </div>
+    
 {% endblock %}
 
 {% block scripts %}
