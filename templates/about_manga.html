@@ -1,17 +1,38 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {% if session['title'] %}
-        {{ session['title'] }} 
-    {% endif %}
+    {{ manga["title"] }}
 {% endblock %}
 
 {% block main %}
-    <h1> {{ title }} </h1>
+    <h1> {{ manga["title"] }} </h1>
     <hr>
-    <ul>
-        {% for chapter in chapters %}
-            <li>chapter: {{ chapter[0] }} id: {{ chapter[3] }} </li>
-        {% endfor %}
-    </ul>
+    <div>
+        <img src="https://cdn.mangaeden.com/mangasimg/{{ manga['image'] }}" >
+        <p>author: {{ manga["author"] }} </p>
+        <p>categories: {% for category in manga["categories"] %} {{ category }} {% endfor %} </p>
+    </div>
+    <div>
+        <h3>Chapters</h3>
+        <hr>
+        <div class="list-group">
+            {% for chapter in manga["chapters"] %}
+                <a 
+                    href="{{ url_for('chapter', alias=manga['alias'], chapter=chapter[0]) }}"
+                    class="list-group-item list-group-item-action"
+                    >
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">
+                            {{ chapter[0] }} 
+                            {% if chapter[2] != None %}
+                                - {{ chapter[2] }}
+                            {% endif %}
+                        </h6>    
+                        <small>Read</small>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    
 {% endblock %}
