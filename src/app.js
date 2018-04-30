@@ -1,3 +1,7 @@
+// HTTP async requests https://github.com/axios/axios 
+const axios = require('axios');
+import 'datalist-polyfill';
+
 const suggestions = document.querySelector('#suggestions');
 const inputField = document.querySelector('#inputField');
 const minLength = 1;
@@ -10,7 +14,7 @@ const inputHandler = (e) => {
     let title = convertTitle(e.target.value);
     let val = e.target.value;
 
-    if (title.length > 1) {
+    if (title.length > minLength) {
         // make AJAX call to api that returns 5 manga suggestions
         axios.get('/api/suggestions', {
             params: {
