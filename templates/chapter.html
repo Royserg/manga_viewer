@@ -4,8 +4,12 @@
     {{ alias }}: {{ chapter }}
 {% endblock %}
 
+{% block navbar %}
+    {% include "includes/_navbar_other.html" %}
+{% endblock %}
+
 {% block main %}
-    <h2 class='text-center'>Chapter: {{ chapter }}</h2>
+    <h2 class='text-center mt-4'>Chapter: {{ chapter }}</h2>
     <hr>
     {% for page in pages %}
         <div class="d-flex justify-content-center mb-2">
