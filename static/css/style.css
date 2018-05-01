@@ -1,3 +1,13 @@
 input[name="inputField"] {
-    width: 60%;
+    width: 70%;
+}
+
+
+/* https://stackoverflow.com/questions/12991351/css-force-image-resize-and-keep-aspect-ratio */
+.card-img-custom {
+    display: block;
+    max-width:450px;
+    max-height:350px;
+    width: auto;
+    height: auto;
 }
