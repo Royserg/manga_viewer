@@ -4,25 +4,46 @@
     {{ manga["title"] }}
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    {% include "includes/_navbar_other.html" %}
+{% endblock %}
+
 {% block main %}
-    <h1> {{ manga["title"] }} </h1>
+    <h2 class='text-center mt-4'> {{ manga["title"] }} </h2>
     <hr>
-    <div>
-        <img src="https://cdn.mangaeden.com/mangasimg/{{ manga['image'] }}" >
-        <p>author: {{ manga["author"] }} </p>
-        <p>categories: {% for category in manga["categories"] %} {{ category }} {% endfor %} </p>
-    </div>
-    <div>
-        <h3>Chapters</h3>
+    <div class="container">
+        <!-- TODO: improve it for the small screen and card block center text vertically -->
+        <!-- card with img on the right -->
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <img class="card-img-custom w-100 mx-auto d-block" alt='{{ manga[2] }}' src="https://cdn.mangaeden.com/mangasimg/{{ manga['image'] }}" >
+                    <!-- <img src="https://placeholdit.imgix.net/~text?txtsize=38&amp;txt=400%C3%97400&amp;w=400&amp;h=400" class="w-100 mx-auto d-block"> -->
+                </div>
+                <div class="col-md-8 px-3 col-xs-12">
+                    <div class="card-block px-2 mt-4 mb-sm-2 d-flex flex-column justify-content-start h-100">
+                        <h5 class='card-title'>Author:  {{ manga["author"] }} </h5>
+                        <p class='card-text'>Categories:  {% for category in manga["categories"] %} <span class="badge badge-secondary">{{ category }}</span> {% endfor %} </p>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+
         <hr>
-        <div class="list-group">
+        <h3 class='text-center'>Chapters</h3>
+        <div class='list-group list-group-flush mb-2'>
             {% for chapter in manga["chapters"] %}
                 <a 
                     href="{{ url_for('chapter', alias=manga['alias'], chapter=chapter[0]) }}"
-                    class="list-group-item list-group-item-action"
+                    class='list-group-item list-group-item-action'
                     >
-                    <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1">
+                    <div class='d-flex w-100 justify-content-between'>
+                        <h6 class='mb-1'>
                             {{ chapter[0] }} 
                             {% if chapter[2] != None %}
                                 - {{ chapter[2] }}
@@ -34,5 +55,5 @@
             {% endfor %}
         </div>
     </div>
-    
+     
 {% endblock %}
