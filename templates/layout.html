@@ -1,25 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{% block title %}{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
         <!-- Bootstrap 4 https://getbootstrap.com/ -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+        {% block styles %}
+        {% endblock %}
+        
     </head>
     <body>
-        <!-- TODO Add some Navigation -->
+        {% block navbar %}
+        {% endblock %}
         
-        <div class='container'>
+        <div class='container-fluid' style="padding-left: 0; padding-right: 0">
             {% block main %}
             {% endblock %}
         </div>
 
 
-        
+        <!-- for navbar haburger menu dropdown -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script src="{{ url_for('static', filename='js/app.bundle.js') }}"></script>
         {% block scripts %}{% endblock %}
     </body>
 </html>
