@@ -78,13 +78,14 @@ def about_manga(manga_alias):
         
     return render_template('about_manga.html', manga=data)
 
-
+# TODO: Fix url converter so it doesn't show XX.0 as a chapter number
 @app.route('/manga/<alias>/<float:chapter>')
 def chapter(alias, chapter):
     """Show Manga chapter images one under another"""
     # retrieve chapter id from the session
     try:
         chapter_id = session['mangas'].get(alias)[chapter]
+        title = Manga.query.filter_by(alias=alias).first().title
     except KeyError:
         # Flash msg: Couldn't find Chapter
         return redirect(url_for('about_manga', manga_alias=alias))
@@ -103,4 +104,4 @@ def chapter(alias, chapter):
     for page in r_pages:
         pages.insert(0, page)
 
-    return render_template('chapter.html', pages=pages, chapter=chapter, alias=alias)
+    return render_template('chapter.html', pages=pages, chapter=chapter, alias=alias, title=title)

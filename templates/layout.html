@@ -6,10 +6,14 @@
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        
+        <!-- Font Awesome https://fontawesome.com/get-started/web-fonts-with-css -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+        <!-- Normalize css -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
         <!-- Bootstrap 4 https://getbootstrap.com/ -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <!-- Custom Style file -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
         {% block styles %}
         {% endblock %}

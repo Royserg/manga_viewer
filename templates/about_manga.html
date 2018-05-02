@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container mt-2">
+    <div class="container mt-4">
         <div class="card">
             <h4 class="card-header text-center mb-1">
                 {{ manga["title"] }}
@@ -23,7 +23,7 @@
                     <img class="card-img-custom w-100 mx-auto d-block" alt='{{ manga[2] }}' src="https://cdn.mangaeden.com/mangasimg/{{ manga['image'] }}" >
                 </div>
                 <div class="col-md-8 px-3 col-xs-12">
-                    <div class="card-block px-2 mt-4 mb-sm-2 d-flex flex-column justify-content-start h-100">
+                    <div class="card-block px-2 mt-4 pb-3 d-flex flex-column justify-content-start h-100">
                         <h5 class='card-title'>Author:  {{ manga["author"] }} </h5>
                         <p class='card-text'>Categories:  {% for category in manga["categories"] %} <span class="badge badge-secondary">{{ category }}</span> {% endfor %} </p>
                     </div>

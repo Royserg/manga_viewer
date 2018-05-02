@@ -1,13 +1,16 @@
 <!-- Navbar for all other pages -->
-<nav class="navbar navbar-dark navbar-expand-sm bg-dark justify-content-between">
+<nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-between">
     <a href="/" class="navbar-brand mr-0">MangaViewer</a> 
-    <button class="navbar-toggler ml-1" type="button" data-toggle="collapse" data-target="#collapsingNavbar2">
+    <button class="navbar-toggler ml-1" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
+    <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar">
         
-        <form class='form-inline mx-auto'>
+        <div class='input-group mx-auto nav-search'>
             <label for='mangaSearch' class='sr-only'>Search Manga</label>
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
             <input 
                 id="inputField" 
                 name="inputField" 
@@ -25,7 +28,7 @@
                 <!--[if IE 9]><select disabled style="display:none" class="ie9_fix"><![endif]-->
                 <!--[if IE 9]></select><![endif]-->
             </datalist>
-        </form>
+        </div>
 
         <ul class="nav navbar-nav flex-row justify-content-around flex-nowrap">
             <li class="nav-item"><a class="nav-link" href="">Logout</a></li>
