@@ -6,6 +6,12 @@ from flask import render_template, jsonify, session, request, url_for, redirect
 from flask_session import Session
 from models import Manga, User
 
+# ----CUSTOM FILTERS----
+@app.template_filter('timestamp_to_time')
+def timestamp_to_time(timestamp, format):
+    return datetime.datetime.fromtimestamp(int(timestamp)).strftime(format)
+
+
 # ----ROUTES----
 @app.route('/')
 def index():
