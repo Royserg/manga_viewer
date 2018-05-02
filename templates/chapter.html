@@ -1,7 +1,18 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {{ alias }}: {{ chapter }}
+    {{ title }}: {{ chapter }}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        body {
+            background-color:#343a40;
+        }
+        .jumbotron {
+            padding: 50px 40px;
+        }
+    </style>
 {% endblock %}
 
 {% block navbar %}
@@ -9,11 +20,23 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class='text-center mt-4'>Chapter: {{ chapter }}</h2>
-    <hr>
-    {% for page in pages %}
-        <div class="d-flex justify-content-center mb-2">
-            <img class="mx-auto d-block mb-1" src="https://cdn.mangaeden.com/mangasimg/{{ page[1] }}" alt="{{ page[0] }}" />
+    <div class="jumbotron">
+        <h3 class='text-center mb-4'>Chapter: {{ chapter }}</h3>
+
+        <!-- TODO: put buttons on the middle -->
+        <div class="btn-group d-flex justify-content-center" role="group" aria-label="chapter navigation buttons">
+            <a href="#" class='btn btn-secondary'>Previous</a>
+            <a href="{{ url_for('about_manga', manga_alias=alias ) }}" class='btn btn-info'>{{ title }}</a>
+            <a href="#" class='btn btn-secondary'>Next</a>
         </div>
-    {% endfor %}
+        
+    </div>
+    
+    <div class="container">
+        {% for page in pages %}
+        <div class="w-100 mb-3">
+            <img class="mx-auto d-block img-responsive w-100" src="https://cdn.mangaeden.com/mangasimg/{{ page[1] }}" alt="{{ page[0] }}" />
+        </div> 
+        {% endfor %}
+    </div>
 {% endblock %}
