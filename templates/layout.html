@@ -20,10 +20,13 @@
         
     </head>
     <body>
-        <!-- Navbar -->
-        {% block navbar %}
-        {% endblock %}
-        
+        <header>
+            <!-- Navbar -->
+            {% block navbar %}
+            {% endblock %}
+        </header>
+
+
         <!-- Flash Message -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -36,15 +39,17 @@
         {% endwith %}
 
         <!-- Main container -->
-        <div class='container-fluid' style="padding-left: 0; padding-right: 0">
+        <div class='wrapper mt-5'>
             {% block main %}
             {% endblock %}
 
-            <footer class='bg-dark py-3 text-center'>
-                <span><small class="text-muted text-white">Coded by CodiSthenx</small></span>
-            </footer>
         </div>
 
+        <footer class='footer bg-dark py-3 text-center'>
+            <div class="container">
+                <span><small class="text-muted text-white">Coded by CodiSthenx</small></span>
+            </div>
+        </footer>
 
         <!-- for navbar haburger menu dropdown -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
