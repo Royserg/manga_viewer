@@ -20,9 +20,22 @@
         
     </head>
     <body>
+        <!-- Navbar -->
         {% block navbar %}
         {% endblock %}
         
+        <!-- Flash Message -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Main container -->
         <div class='container-fluid' style="padding-left: 0; padding-right: 0">
             {% block main %}
             {% endblock %}

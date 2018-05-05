@@ -2,7 +2,7 @@ import requests
 import datetime
 
 from application import app
-from flask import render_template, jsonify, session, request, url_for, redirect
+from flask import render_template, jsonify, session, request, url_for, redirect, flash
 from flask_session import Session
 from models import Manga, User
 
@@ -53,7 +53,7 @@ def about_manga(manga_alias):
         manga_id = Manga.query.filter_by(alias=f'{manga_alias}').first().id
         print(f"=====Manga id: {manga_id}====")
     except AttributeError:
-        # Flash msg: Couldn't find that Manga
+        flash("Couldn't find that Manga", 'danger')
         return redirect(url_for('index'))
     
     # init chapters storage for manga title in session
@@ -81,7 +81,7 @@ def about_manga(manga_alias):
     #     # store chapter number in session as a string - key
     #     chap_number = str(chapter[0])
     #     session['mangas'][manga_alias][chap_number] = chapter[3]
-        
+    
     return render_template('about_manga.html', manga=data)
 
 
@@ -94,10 +94,10 @@ def chapter(alias, chapter):
         # get title of selected manga
         title = Manga.query.filter_by(alias=alias).first().title
     except KeyError:
-        # Flash msg: Couldn't find Chapter
+        flash("Couldn't find Chapter", "danger")
         return redirect(url_for('about_manga', manga_alias=alias))
     except TypeError:
-        # Flash msg: Filled session, choose the chapter again
+        flash("Filled session, choose the chapter again", "info")
         return redirect(url_for('about_manga', manga_alias=alias))
 
     print(f'========chapter_id: {chapter_id}==========')
