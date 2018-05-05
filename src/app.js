@@ -7,7 +7,7 @@ const inputField = document.querySelector('#inputField');
 const minLength = 1;
 
 // convert input title for matching manga alias
-const convertTitle = (title) => title.toLowerCase().split(" ").join("-");
+const convertTitle = (title) => title.toLowerCase().replace(/[()]/g, "").split(" ").join("-");
 
 // detect interaction on input
 const inputHandler = (e) => {
