@@ -14,11 +14,14 @@ def timestamp_to_time(timestamp, format):
 
 # ----ROUTES----
 @app.route('/')
+@app.route('/manga')
 def index():
     """Show index page - Manga Search"""
     # init server-side session
     if session.get('mangas') is None:
         session['mangas'] = {}
+
+    # TODO: GET all saved mangas and pass to index
 
     return render_template('index.html')
 
@@ -141,3 +144,18 @@ def chapter(alias, chapter):
             chapter_nav["next"] = next_chapter
 
     return render_template('chapter.html', pages=pages, chapter_nav=chapter_nav, alias=alias, title=title)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        pass
+    
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        pass
+    
+    return render_template('login.html')

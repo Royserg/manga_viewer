@@ -8,6 +8,9 @@ app.config.from_pyfile('config.py')
 Session(app)
 db.init_app(app)
 
+login_manager.init_app(app)
+
+
 # ----INITIAL DATA SEED----
 def init_db():
     # Manga API https://www.mangaeden.com/api
