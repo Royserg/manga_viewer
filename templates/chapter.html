@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {{ title }}: {{ chapter }}
+    {{ title }}: {{ chapter_nav['current'] }}
 {% endblock %}
 
 {% block styles %}
@@ -21,14 +21,9 @@
 
 {% block main %}
     <div class="jumbotron">
-        <h3 class='text-center mb-4'>Chapter: {{ chapter }}</h3>
+        <h3 class='text-center mb-4'>Chapter: {{ chapter_nav['current'] }}</h3>
 
-        <!-- TODO: put buttons on the middle -->
-        <div class="btn-group d-flex justify-content-center" role="group" aria-label="chapter navigation buttons">
-            <a href="#" class='btn btn-secondary'>Previous</a>
-            <a href="{{ url_for('about_manga', manga_alias=alias ) }}" class='btn btn-info'>{{ title }}</a>
-            <a href="#" class='btn btn-secondary'>Next</a>
-        </div>
+        {% include 'includes/_chapter_navigation.html' %}
         
     </div>
     
@@ -39,4 +34,7 @@
         </div> 
         {% endfor %}
     </div>
+
+    {% include 'includes/_chapter_navigation.html' %}
+
 {% endblock %}

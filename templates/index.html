@@ -14,7 +14,7 @@
 
 
 {% block main %}
-    <div class="bg-secondary pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+    <div class="bg-secondary pt-3 px-3 pt-md-1 px-md-5 text-center text-white pb-3">
         <div class="my-3 py-3">
             <h1 class="display-4 font-weight-normal mb-3">Search Manga</h1>
             <label class="sr-only" for="inputField">Manga Title</label>
@@ -34,9 +34,27 @@
                 <!--[if IE 9]></select><![endif]-->
             </datalist>
         </div>
-        <div class="bg-light box-shadow mx-auto text-dark" style="width: 80%; height: 100vh; border-radius: 21px 21px 0 0;">
-            <h3>Favorite Manga</h3>
+        
+        <div class="bg-light box-shadow mx-auto text-dark" style="width: 80%; border-radius: 21px 21px 21px 21px;">
+            <h4 class="py-3">Favorite Manga</h4>
+            <!-- TODO: fill manga card with Manga info and img -->
+            <div class="container d-flex justify-content-around flex-wrap">
+                <div class="card mb-4 border-secondary">
+                    <img class="card-img-top" src="http://via.placeholder.com/200x150" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-text">Card title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+                
+                
+                
+            
+            </div>
         </div>
+        
     </div>
 
 {% endblock %}

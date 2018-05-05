@@ -73,18 +73,25 @@ def about_manga(manga_alias):
     # put mangas id's into session for manga alias
     if session_length == 0 or session_length != len(chapters):
         for chapter in chapters:
-            session['mangas'][manga_alias][chapter[0]] = chapter[3]
+            # store chapter number in session as a string - key
+            chap_number = str(chapter[0])
+            session['mangas'][manga_alias][chap_number] = chapter[3]
 
+    # for chapter in chapters:
+    #     # store chapter number in session as a string - key
+    #     chap_number = str(chapter[0])
+    #     session['mangas'][manga_alias][chap_number] = chapter[3]
         
     return render_template('about_manga.html', manga=data)
 
-# TODO: Fix url converter so it doesn't show XX.0 as a chapter number
-@app.route('/manga/<alias>/<float:chapter>')
+
+@app.route('/manga/<alias>/<chapter>')
 def chapter(alias, chapter):
     """Show Manga chapter images one under another"""
     # retrieve chapter id from the session
     try:
         chapter_id = session['mangas'].get(alias)[chapter]
+        # get title of selected manga
         title = Manga.query.filter_by(alias=alias).first().title
     except KeyError:
         # Flash msg: Couldn't find Chapter
@@ -103,5 +110,34 @@ def chapter(alias, chapter):
     pages = []
     for page in r_pages:
         pages.insert(0, page)
+    
+    # prepare object for chapters navigation buttons
+    chapter_nav = {
+        "current": chapter,
+        "previous": None,
+        "next": None
+    }
 
-    return render_template('chapter.html', pages=pages, chapter=chapter, alias=alias, title=title)
+    # get list of chapter numbers from session object
+    chapter_numbers = list(session['mangas'][alias].keys())[::-1]    
+    # loop over list of chapter numbers and find selected chapter, get previous and next one
+    for i in range(len(chapter_numbers)):
+        if chapter_numbers[i] == chapter:
+            # When current chapter is 0, `previous` is becoming the last - fix
+            try:
+                if i is 0:
+                    prev_chapter = None
+                else:
+                    prev_chapter = chapter_numbers[i-1]
+            except IndexError:
+                prev_chapter = None
+            
+            try:
+                next_chapter = chapter_numbers[i+1]
+            except IndexError:
+                next_chapter = None
+
+            chapter_nav["previous"] = prev_chapter
+            chapter_nav["next"] = next_chapter
+
+    return render_template('chapter.html', pages=pages, chapter_nav=chapter_nav, alias=alias, title=title)
