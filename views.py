@@ -4,7 +4,7 @@ import datetime
 from application import app
 from flask import render_template, jsonify, session, request, url_for, redirect, flash
 from flask_session import Session
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from models import Manga, User
 
 # ----CUSTOM FILTERS----
@@ -16,6 +16,7 @@ def timestamp_to_time(timestamp, format):
 # ----ROUTES----
 @app.route('/')
 @app.route('/manga')
+@login_required
 def index():
     """Show index page - Manga Search"""
     # init server-side session
@@ -23,12 +24,9 @@ def index():
         session['mangas'] = {}
 
     # TODO: GET all saved mangas and pass to index
-    user = User.query.filter_by(username='test').first()
-    login_user(user)
-
     subs = []
 
-    for manga in user.subscriptions:
+    for manga in current_user.subscriptions:
         r = requests.get(f'https://www.mangaeden.com/api/manga/{manga.id}')
         data = r.json()
         subs.append(
@@ -64,8 +62,10 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
-        # flash(f'Welcome, {user.username}', 'success')
-        pass
+        user = User.query.filter_by(username='test').first()
+        login_user(user)
+        flash(f'Welcome, {user.username}', 'success')
+        return redirect(url_for('index'))
     
     return render_template('login.html')
 
@@ -93,6 +93,7 @@ def suggestions():
 
 
 @app.route('/manga/<manga_alias>/')
+@login_required
 def about_manga(manga_alias):
     """Query db for id of chosen manga, gather all info about manga from API and display them"""
 
@@ -103,6 +104,12 @@ def about_manga(manga_alias):
         flash("Couldn't find that Manga", 'danger')
         return redirect(url_for('index'))
     
+    # Check if subscribed
+    subscribed = False
+    for manga in current_user.subscriptions:
+        if manga.id == manga_id:
+            subscribed = True
+
     # init chapters storage for manga title in session
     if session['mangas'].get(manga_alias) is None:
         session['mangas'][manga_alias] = {}
@@ -123,16 +130,12 @@ def about_manga(manga_alias):
             # store chapter number in session as a string - key
             chap_number = str(chapter[0])
             session['mangas'][manga_alias][chap_number] = chapter[3]
-
-    # for chapter in chapters:
-    #     # store chapter number in session as a string - key
-    #     chap_number = str(chapter[0])
-    #     session['mangas'][manga_alias][chap_number] = chapter[3]
     
-    return render_template('about_manga.html', manga=data)
+    return render_template('about_manga.html', manga=data, subscribed=subscribed)
 
 
 @app.route('/manga/<alias>/<chapter>')
+@login_required
 def chapter(alias, chapter):
     """Show Manga chapter images one under another"""
     # retrieve chapter id from the session

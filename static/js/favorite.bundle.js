@@ -400,7 +400,7 @@ eval("// shim for using process in browser\nvar process = module.exports = {};\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n\nconsole.log('favorite file');\n\n//# sourceURL=webpack:///./src/favorite.js?");
+eval("\n\n// HTTP async requests https://github.com/axios/axios \nvar axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n\nvar favorite = document.getElementById('favorite');\n\nvar subscribe = function subscribe() {\n    if (favorite.classList.contains('far')) {\n        // When user subscribes\n        // send axios request to subscribe and add to db\n\n        // change icon\n        favorite.classList.remove('far');\n        favorite.classList.add('fas');\n    } else {\n        // When user unsubscribes\n        // send axios request to unsubscribe and remove from db\n\n        // change icon\n        favorite.classList.remove('fas');\n        favorite.classList.add('far');\n    }\n};\n\nfavorite.addEventListener('click', subscribe);\n\n//# sourceURL=webpack:///./src/favorite.js?");
 
 /***/ })
 
