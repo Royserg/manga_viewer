@@ -34,6 +34,14 @@ input[name="inputField"] {
     height: auto;
 }
 
+.card-img-index {
+    display: block;
+    max-width: 200px;
+    max-height: 215px;
+    width: auto;
+    height: auto;
+}
+
 .bg-navbar {
     background-color: #232930;
 }

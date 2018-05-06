@@ -18,7 +18,7 @@
             <h4 class="card-header text-center mb-1">
                 {{ manga["title"] }}
                 <label for="favorite" class='sr-only'>Add manga to favorites</label>
-                <i class="{% if subscribed %} fas {% else %} far {% endif %} fa-star float-right" id='favorite'></i>
+                <i data-manga-id="{{ manga_id }}" class="{% if subscribed %} fas {% else %} far {% endif %} fa-star float-right" id='favorite'></i>
             </h4>
             <div class="row">
                 <div class="col-md-4 col-xs-12">
@@ -27,7 +27,12 @@
                 <div class="col-md-8 px-3 col-xs-12">
                     <div class="card-block px-2 mt-4 pb-3 d-flex flex-column justify-content-start h-100">
                         <h5 class='card-title'>Author:  {{ manga["author"] }} </h5>
-                        <p class='card-text'>Categories:  {% for category in manga["categories"] %} <span class="badge badge-secondary">{{ category }}</span> {% endfor %} </p>
+                        <p class='card-text'>
+                            Categories:  
+                            {% for category in manga["categories"] %} 
+                                <span class="badge badge-secondary">{{ category }}</span> 
+                            {% endfor %} 
+                        </p>
                     </div>
                 </div>
     
