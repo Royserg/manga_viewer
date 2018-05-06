@@ -5,7 +5,7 @@ from application import app
 from flask import render_template, jsonify, session, request, url_for, redirect, flash
 from flask_session import Session
 from flask_login import login_user, login_required, logout_user, current_user
-from models import Manga, User
+from models import *
 
 # ----CUSTOM FILTERS----
 @app.template_filter('timestamp_to_time')
@@ -34,7 +34,7 @@ def index():
                 "title": data["title"],
                 "alias": data["alias"],
                 "image": f"https://cdn.mangaeden.com/mangasimg/{data['image']}",
-                "last_chapter_date": data["last_chapter_date"]
+                "last_chapter_date": data["last_chapter_date"],
             }
         )
     
@@ -69,9 +69,10 @@ def login():
     
     return render_template('login.html')
 
-
+# ----API----
 # ---PULL SUGGESTIONS FROM DB---
 @app.route('/api/suggestions')
+@login_required
 def suggestions():
     """Fetch 5 picks from database matching query and return them"""
     # get argument from input
@@ -91,6 +92,40 @@ def suggestions():
     
     return jsonify(suggestions)
 
+# ----SUBSCRIBE----
+@app.route('/api/subscribe', methods=['POST'])
+@login_required
+def subscribe():
+    """Save manga into favorites, so it will display on the main page"""
+    # retrieve data from request
+    data = request.get_json()
+    manga_id = data.get('manga_id')
+
+    # insert directly into helper table
+    sub = subs.insert().values(user_id=current_user.id, manga_id=manga_id)
+    db.session.execute(sub)
+    db.session.commit()
+
+    return "subscribed"
+
+# ----UNSUBSCRIBE----
+@app.route('/api/unsubscribe', methods=['POST'])
+@login_required
+def unsubscribe():
+    """Delete manga from favorites"""
+    # retrieve data from request
+    data = request.get_json()
+    manga_id = data.get('manga_id')
+    
+    # delete row from association table
+    del_sub = subs.delete().where(
+            subs.c.user_id == current_user.id).where(
+            subs.c.manga_id == manga_id)
+
+    db.session.execute(del_sub)
+    db.session.commit()
+
+    return "unsubscribed"
 
 @app.route('/manga/<manga_alias>/')
 @login_required
@@ -131,7 +166,7 @@ def about_manga(manga_alias):
             chap_number = str(chapter[0])
             session['mangas'][manga_alias][chap_number] = chapter[3]
     
-    return render_template('about_manga.html', manga=data, subscribed=subscribed)
+    return render_template('about_manga.html', manga=data, subscribed=subscribed, manga_id=manga_id)
 
 
 @app.route('/manga/<alias>/<chapter>')

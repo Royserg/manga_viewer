@@ -36,12 +36,11 @@
         
         <div class="bg-white box-shadow mx-auto text-secondary border" style="width: 80%; border-radius: 21px 21px 21px 21px;">
             <h4 class="py-3">Favorite Manga</h4>
-            <!-- TODO: fill manga card with Manga info and img -->
             <div class="container d-flex justify-content-around flex-wrap">
                 {% for manga in subs %}
                     <div class="card mb-4 border">
                         <a href="{{ url_for('about_manga', manga_alias=manga['alias']) }}">
-                            <img class="card-img-top" src="{{ manga['image'] }}" alt="Card image cap">
+                            <img class="card-img-index mx-auto" src="{{ manga['image'] }}" alt="Manga image">
                             <div class="card-body">
                                 <h5 class="card-text">{{ manga['title'] }}</h5>
                             </div>
