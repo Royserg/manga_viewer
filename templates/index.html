@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block main %}
-    <div class="bg-secondary pt-3 px-3 pt-md-1 px-md-5 text-center text-white pb-5">
+    <div class="bg-light pt-3 px-3 pt-md-1 px-md-5 text-center text-muted pb-5">
         <div class="my-3 py-3">
             <h1 class="display-4 font-weight-normal mb-3">Search Manga</h1>
             <label class="sr-only" for="inputField">Manga Title</label>
@@ -34,19 +34,23 @@
             </datalist>
         </div>
         
-        <div class="bg-light box-shadow mx-auto text-dark" style="width: 80%; border-radius: 21px 21px 21px 21px;">
+        <div class="bg-white box-shadow mx-auto text-secondary border" style="width: 80%; border-radius: 21px 21px 21px 21px;">
             <h4 class="py-3">Favorite Manga</h4>
             <!-- TODO: fill manga card with Manga info and img -->
             <div class="container d-flex justify-content-around flex-wrap">
-                <div class="card mb-4 border-secondary">
-                    <img class="card-img-top" src="http://via.placeholder.com/200x150" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-text">Card title</h5>
+                {% for manga in subs %}
+                    <div class="card mb-4 border">
+                        <a href="{{ url_for('about_manga', manga_alias=manga['alias']) }}">
+                            <img class="card-img-top" src="{{ manga['image'] }}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-text">{{ manga['title'] }}</h5>
+                            </div>
+                        </a>
+                        <div class="card-footer">
+                            <small class="text-muted">{{ manga['last_chapter_date'] | timestamp_to_time('%d-%m-%Y') }}</small>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
         

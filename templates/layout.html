@@ -21,31 +21,30 @@
     </head>
     <body>
         <header>
-            <!-- Navbar -->
             {% block navbar %}
             {% endblock %}
         </header>
 
-
         <!-- Flash Message -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}" role="alert">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} mt-5 text-center" role="alert">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    {% endfor %}
+
             {% endif %}
         {% endwith %}
 
         <!-- Main container -->
-        <div class='wrapper mt-5'>
+        <div class='wrapper pt-5 bg-light'>
             {% block main %}
             {% endblock %}
-
         </div>
 
-        <footer class='footer bg-dark py-3 text-center'>
+        <footer class='footer py-3 text-center'>
             <div class="container">
                 <span><small class="text-muted text-white">Coded by CodiSthenx</small></span>
             </div>

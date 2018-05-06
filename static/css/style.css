@@ -14,6 +14,7 @@ body {
 
 .footer {
     flex-shrink: 0;
+    background-color: #232930;
 }
 
 input[name="inputField"] {
@@ -36,3 +37,11 @@ input[name="inputField"] {
 .bg-navbar {
     background-color: #232930;
 }
+
+.alert {
+    margin-bottom: 0;
+}
+
+.fa-star:hover {
+    cursor: pointer;
+} 

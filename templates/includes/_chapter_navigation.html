@@ -1,5 +1,5 @@
 <!-- Switching between chapters and accessing about manga page -->
-<div class="btn-group d-flex justify-content-center" role="group" aria-label="chapter navigation buttons">
+<div class="btn-group mb-2 d-flex justify-content-center" role="group" aria-label="chapter navigation buttons">
     {% if chapter_nav['previous'] != None %}
         <a href="{{ url_for('chapter', alias=alias, chapter=chapter_nav['previous']) }}" class='btn btn-secondary'><i class="fas fa-arrow-left"></i>&ensp;{{ chapter_nav['previous'] }}</a>
     {% endif %}

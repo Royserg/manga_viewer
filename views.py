@@ -4,6 +4,7 @@ import datetime
 from application import app
 from flask import render_template, jsonify, session, request, url_for, redirect, flash
 from flask_session import Session
+from flask_login import login_user, login_required, logout_user
 from models import Manga, User
 
 # ----CUSTOM FILTERS----
@@ -22,8 +23,51 @@ def index():
         session['mangas'] = {}
 
     # TODO: GET all saved mangas and pass to index
+    user = User.query.filter_by(username='test').first()
+    login_user(user)
 
-    return render_template('index.html')
+    subs = []
+
+    for manga in user.subscriptions:
+        r = requests.get(f'https://www.mangaeden.com/api/manga/{manga.id}')
+        data = r.json()
+        subs.append(
+            {
+                "title": data["title"],
+                "alias": data["alias"],
+                "image": f"https://cdn.mangaeden.com/mangasimg/{data['image']}",
+                "last_chapter_date": data["last_chapter_date"]
+            }
+        )
+    
+
+    return render_template('index.html', subs=subs)
+
+
+# ----LOGOUT----
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You successfully logged out", 'success')
+    return redirect(url_for('login'))
+
+# ----REGISTER----
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        pass
+    
+    return render_template('register.html')
+
+# ----LOGIN----
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        # flash(f'Welcome, {user.username}', 'success')
+        pass
+    
+    return render_template('login.html')
 
 
 # ---PULL SUGGESTIONS FROM DB---
@@ -144,18 +188,3 @@ def chapter(alias, chapter):
             chapter_nav["next"] = next_chapter
 
     return render_template('chapter.html', pages=pages, chapter_nav=chapter_nav, alias=alias, title=title)
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == "POST":
-        pass
-    
-    return render_template('register.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == "POST":
-        pass
-    
-    return render_template('login.html')
