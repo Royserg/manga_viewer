@@ -25,7 +25,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String, nullable=False)
-    subscriptions = db.relationship("Manga", secondary=subs, backref="subscribers", lazy=True)
+    subscriptions = db.relationship("Manga", secondary=subs, 
+                    backref=db.backref("subscribers", lazy='dynamic')
 
 # ----Login Manager loader-----
 @login_manager.user_loader
