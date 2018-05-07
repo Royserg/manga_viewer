@@ -23,7 +23,6 @@ def index():
     if session.get('mangas') is None:
         session['mangas'] = {}
 
-    # TODO: GET all saved mangas and pass to index
     subs = []
 
     for manga in current_user.subscriptions:
@@ -46,6 +45,7 @@ def index():
 @app.route('/logout')
 @login_required
 def logout():
+    """Logout User"""
     logout_user()
     flash("You successfully logged out", 'success')
     return redirect(url_for('login'))
@@ -53,6 +53,7 @@ def logout():
 # ----REGISTER----
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """Registration Form for creating new account"""
     if request.method == "POST":
         pass
     
@@ -61,6 +62,7 @@ def register():
 # ----LOGIN----
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Login Form"""
     if request.method == "POST":
         user = User.query.filter_by(username='test').first()
         login_user(user)
