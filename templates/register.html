@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% import '_formhelpers.html' as forms %}
 
 {% block navbar %}
     {% include "includes/_navbar_main.html" %}
@@ -6,26 +7,20 @@
 
 {% block main %}
     <div class="container mt-5 mb-4 text-muted">
-        <h3 class='text-center'>Register</h3>
-        <form class='mx-auto' style='width:60%' method="POST" action="/register">
-            <div class="form-group">
-                <label for="usernameField">Username</label>
-                <input type="text" class="form-control" id="usernameField" name='username' aria-describedby="username" placeholder="Enter Username">
-            </div>
-            <div class="form-group">
-                <label for="emailField">Email address</label>
-                <input type="email" class="form-control" id="emailField" aria-describedby="email" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-                <label for="passwordField">Password</label>
-                <input type="password" class="form-control" id="passwordField" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <label for="passwordFieldConfirm">Confirm Password</label>
-                <input type="password" class="form-control" id="passwordFieldConfirm" placeholder="Confirm Password">
-            </div>
-    
+        <h3 class='text-center mb-1'>Register</h3>
+        <hr>
+        <form class='mx-auto mt-4' style='width:60%' method="POST" action="/register">
+
+            {% for field in form %}
+                {{ forms.render_field(field) }}
+            {% endfor %}
+
             <button type="submit" class="btn btn-info text-light">Register</button>
+
         </form>
     </div>
+{% endblock %}
+
+
+{% block scripts %}
 {% endblock %}

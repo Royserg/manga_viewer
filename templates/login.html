@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% import '_formhelpers.html' as forms %}
 
 {% block navbar %}
     {% include "includes/_navbar_main.html" %}
@@ -7,17 +8,17 @@
 {% block main %}
     <div class="container mt-5 mb-4 text-muted">
         <h3 class='text-center'>Login</h3>
-        <form class='mx-auto' style='width:60%' method="POST" action="/login">
-            <div class="form-group">
-                <label for="usernameField">Username</label>
-                <input type="text" class="form-control" id="usernameField" name='username' aria-describedby="username" placeholder="Enter Username">
-            </div>
-            <div class="form-group">
-                <label for="passwordField">Password</label>
-                <input type="password" class="form-control" id="passwordField" placeholder="Password">
-            </div>
-    
+        <hr>
+        <form class='mx-auto mt-4' style='width:60%' method="POST" action="/login">
+            
+            {% for field in form %}
+                {{ forms.render_field(field) }}
+            {% endfor %}
+                
             <button type="submit" class="btn btn-info text-light">Login</button>
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
 {% endblock %}
