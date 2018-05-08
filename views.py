@@ -6,6 +6,8 @@ from flask import render_template, jsonify, session, request, url_for, redirect,
 from flask_session import Session
 from flask_login import login_user, login_required, logout_user, current_user
 from models import *
+from forms import LoginForm, RegisterForm
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # ----CUSTOM FILTERS----
 @app.template_filter('timestamp_to_time')
@@ -54,22 +56,52 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registration Form for creating new account"""
-    if request.method == "POST":
-        pass
+    form = RegisterForm()
+
+    if request.method == "POST" and form.validate_on_submit():
+        username = form.username.data.lower()
+        user_exists = User.query.filter_by(username=username).first()
+        # if that username already exists show error msg
+        if user_exists:
+            flash("That username is already taken, try different one")
+            return redirect(url_for('register'))
+
+        # create new user when username is not taken
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(
+                        username=username,
+                        email=form.email.data,
+                        password=hashed_password
+                    )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('You have been registered, please login', 'success')
+        return redirect(url_for('login'))
+        # return f"You registered successfully {form.username.data}, your email {form.email.data}"
     
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 # ----LOGIN----
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Login Form"""
-    if request.method == "POST":
-        user = User.query.filter_by(username='test').first()
-        login_user(user)
-        flash(f'Welcome, {user.username}', 'success')
-        return redirect(url_for('index'))
+    form = LoginForm()
+
+    if request.method == "POST" and form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            # provided password for that user is okay, log in user, redirect to index
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                flash(f'Welcome, {user.username}', 'success')
+                return redirect(url_for('index'))
+        # if username or password was not correct
+        flash('Invalid username or password', 'danger')
+        return redirect(url_for('login'))
     
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 # ----API----
 # ---PULL SUGGESTIONS FROM DB---
