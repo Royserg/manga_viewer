@@ -35,21 +35,25 @@
         </div>
         
         <div class="bg-white box-shadow mx-auto text-secondary border" style="width: 80%; border-radius: 21px 21px 21px 21px;">
-            <h4 class="py-3">Favorite Manga</h4>
+            <h4 class="py-3" style='border-bottom: 1px solid rgb(219, 219, 219)' >Favorite Manga</h4>
             <div class="container d-flex justify-content-around flex-wrap">
-                {% for manga in subs %}
-                    <div class="card mb-4 border">
-                        <a href="{{ url_for('about_manga', manga_alias=manga['alias']) }}">
-                            <img class="card-img-index mx-auto" src="{{ manga['image'] }}" alt="Manga image">
-                            <div class="card-body">
-                                <h5 class="card-text">{{ manga['title'] }}</h5>
+                {% if subs %}
+                    {% for manga in subs %}
+                        <div class="card mb-4 border">
+                            <a href="{{ url_for('about_manga', manga_alias=manga['alias']) }}">
+                                <img class="card-img-index mx-auto" src="{{ manga['image'] }}" alt="Manga image">
+                                <div class="card-body">
+                                    <h5 class="card-text">{{ manga['title'] }}</h5>
+                                </div>
+                            </a>
+                            <div class="card-footer">
+                                <small class="text-muted">{{ manga['last_chapter_date'] | timestamp_to_time('%d-%m-%Y') }}</small>
                             </div>
-                        </a>
-                        <div class="card-footer">
-                            <small class="text-muted">{{ manga['last_chapter_date'] | timestamp_to_time('%d-%m-%Y') }}</small>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <div class='mb-4'>Add Manga to favorites using <i class='far fa-star'></i></div>
+                {% endif %}
             </div>
         </div>
         
