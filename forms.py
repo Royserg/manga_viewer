@@ -20,4 +20,4 @@ class RegisterForm(FlaskForm):
                 ],
                 description="Make it secure"
             )
-    confirm = PasswordField('Confirm', validators=[InputRequired(), Length(min=8, max=80)], description="Confirm Your Password")
+    confirm = PasswordField('Confirm', validators=[InputRequired(), Length(min=6, max=80)], description="Confirm Your Password")
