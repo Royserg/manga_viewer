@@ -50,6 +50,6 @@ input[name="inputField"] {
     margin-bottom: 0;
 }
 
-.fa-star:hover {
+.card > h4 > .fa-star:hover {
     cursor: pointer;
 } 
