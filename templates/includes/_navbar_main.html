@@ -3,8 +3,11 @@
     <a href="/manga" class="navbar-brand mr-0">MangaViewer</a> 
     
     <ul class="nav navbar-nav flex-row justify-content-between flex-nowrap">
-        <li class="nav-item mx-1"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
-        <li class="nav-item mx-1"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-        <li class="nav-item mx-1"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        {% if current_user.is_authenticated %}
+            <li class="nav-item mx-1"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+            <li class="nav-item mx-1"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+            <li class="nav-item mx-1"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
     </ul>
 </nav>
