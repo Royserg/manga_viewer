@@ -89,7 +89,7 @@ def login():
     form = LoginForm()
 
     if request.method == "POST" and form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data.lower()).first()
         if user:
             # provided password for that user is okay, log in user, redirect to index
             if check_password_hash(user.password, form.password.data):
