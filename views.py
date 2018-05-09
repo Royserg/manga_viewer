@@ -55,7 +55,7 @@ def logout():
 # ----REGISTER----
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """Registration Form for creating new account"""
+    """Dispaly Registration Form for creating new account"""
     form = RegisterForm()
 
     if request.method == "POST" and form.validate_on_submit():
@@ -63,7 +63,7 @@ def register():
         user_exists = User.query.filter_by(username=username).first()
         # if that username already exists show error msg
         if user_exists:
-            flash("That username is already taken, try different one")
+            flash("That username is already taken, try different one", 'danger')
             return redirect(url_for('register'))
 
         # create new user when username is not taken
@@ -77,9 +77,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        flash('You have been registered, please login', 'success')
+        flash('You have been registered, please log in', 'success')
         return redirect(url_for('login'))
-        # return f"You registered successfully {form.username.data}, your email {form.email.data}"
     
     return render_template('register.html', form=form)
 
@@ -168,7 +167,6 @@ def about_manga(manga_alias):
 
     try:
         manga_id = Manga.query.filter_by(alias=f'{manga_alias}').first().id
-        print(f"=====Manga id: {manga_id}====")
     except AttributeError:
         flash("Couldn't find that Manga", 'danger')
         return redirect(url_for('index'))
@@ -188,11 +186,7 @@ def about_manga(manga_alias):
     data = r.json()
     chapters = data['chapters']
     
-    # test
     session_length = len(session['mangas'][manga_alias])
-    print(f'from API, length: {len(chapters)}')
-    print(f"{manga_alias}== {session_length}")
-
     # put mangas id's into session for manga alias
     if session_length == 0 or session_length != len(chapters):
         for chapter in chapters:
@@ -219,9 +213,7 @@ def chapter(alias, chapter):
         flash("Filled session, choose the chapter again", "info")
         return redirect(url_for('about_manga', manga_alias=alias))
 
-    print(f'========chapter_id: {chapter_id}==========')
     # pull chapter Data from API
-    # r = requests.get('https://www.mangaeden.com/api/chapter/5372443e45b9ef33a85f0ffb')
     r = requests.get(f'https://www.mangaeden.com/api/chapter/{chapter_id}')
 
     r_pages = r.json()['images']
