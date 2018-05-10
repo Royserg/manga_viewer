@@ -5,7 +5,7 @@
 
 ### ___Online___: [deployed to Heroku](https://manga-viewer.herokuapp.com/ "Heroku Manga-Viewer")
 
-To access application, it is required to login. Register for a new account or use credentails below:
+To access application, it is required to login. Register for a new account or use credentials below:
 
 >username: testing\
 >password: testing
