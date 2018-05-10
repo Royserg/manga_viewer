@@ -9,6 +9,7 @@ from models import *
 from forms import LoginForm, RegisterForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 # ----CUSTOM FILTERS----
 @app.template_filter('timestamp_to_time')
 def timestamp_to_time(timestamp, format):
@@ -52,6 +53,7 @@ def logout():
     flash("You successfully logged out", 'success')
     return redirect(url_for('login'))
 
+
 # ----REGISTER----
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -82,6 +84,7 @@ def register():
     
     return render_template('register.html', form=form)
 
+
 # ----LOGIN----
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -102,6 +105,7 @@ def login():
     
     return render_template('login.html', form=form)
 
+
 # ----API----
 # ---PULL SUGGESTIONS FROM DB---
 @app.route('/api/suggestions')
@@ -116,14 +120,17 @@ def suggestions():
     
     # transform data from db into JSON
     suggestions = {}
-
+    # ===========================
+    # keep image info and last date for possible implementing of dropdown with img
+    # ===========================
     for manga in data:
         suggestions[manga.title] = {
-                                    "image": manga.image, # for possible implementation of dropdown divs
+                                    "image": manga.image,
                                     "last_date": datetime.datetime.fromtimestamp(int(manga.last_chap_date)).strftime('%d-%m-%Y')
                                     }
     
     return jsonify(suggestions)
+
 
 # ----SUBSCRIBE----
 @app.route('/api/subscribe', methods=['POST'])
