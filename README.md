@@ -1,6 +1,6 @@
 # Manga Viewer
 
-### Application build in Flask for viewing your favorite [**Manga**](https://en.wikipedia.org/wiki/Manga)
+### Application created with Flask for reading favorite [**Manga**](https://en.wikipedia.org/wiki/Manga)
 
 
 ### ___Online___: [deployed to Heroku](https://manga-viewer.herokuapp.com/ "Heroku Manga-Viewer")
@@ -10,7 +10,14 @@ To access application, it is required to login. Register for a new account or us
 >username: testing\
 >password: testing
 ---
-### API
+## Technologies
+Project is created with:
+* Python version: 3.6.5
+* Flask version: 0.12.2
+* SQLAlchemy version: 1.2.6
+* MySQL database on private hosting
+* Bootstrap 4
+* JS library for fetching data: Axios
 * App uses external API for pulling data about mangas and chapter images: [Manga Eden API](https://www.mangaeden.com/api "API")
 ---
 ## Overview
@@ -35,6 +42,27 @@ To access application, it is required to login. Register for a new account or us
 
     ![Chapter](readme_img/chapter.png)
 
+---
+## Setup
+To run the app on locally, it would be needed to attach own SQL database. Required to change `config.py` file in root directory.
 
+`config.py`
+```
+SQLALCHEMY_DATABASE_URI = '<URI To Database>'
+```
+
+Install all dependecies:
+```
+$ pip install -r requirements.txt
+```
+Before starting application, connect to database as above by setting URI and in root direcotry run:
+```
+$ python setup_tables.py
+```
+
+Then when application run first time, will fetch all Manga titles from API and save them into database.
+```
+$ python application.py
+```
 
 
